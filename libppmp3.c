@@ -21,10 +21,7 @@ void load_pixels(ppm_p3_image *image, FILE *file){
 	int i, j;
 	for (i = 0; i < image->height; i++){
 		for (j = 0; j < image->width; j++){
-			if (j == image->width - 1)
-				fscanf(file, "%d %d %d\n", &image->pixels[i][j].r, &image->pixels[i][j].g, &image->pixels[i][j].b);
-			else
-				fscanf(file, "%d %d %d ", &image->pixels[i][j].r, &image->pixels[i][j].g, &image->pixels[i][j].b);
+			fscanf(file, "%d %d %d", &image->pixels[i][j].r, &image->pixels[i][j].g, &image->pixels[i][j].b);
 		}
 	}
 }
@@ -45,7 +42,7 @@ ppm_p3_image* create_image(int width, int height, int maximum, pixel **pixels){
 ppm_p3_image* load_image(char name[]){
 	FILE *file = fopen(name, "r");
 	if (file == NULL){
-		printf("File wasn't able to be opened\n");
+		printf("Cannot be able to open the file\n");
 		exit(127);
 	}
 	int w, h, max;
@@ -80,4 +77,28 @@ void write_image(ppm_p3_image *image, char name[]){
 		}
 	}
 	fclose(file);
+}
+
+void free_image(ppm_p3_image *image){
+	int i;
+	for (i = 0; i < image->height; i++){
+		free(image->pixels[i]);
+	}
+	free(image);
+}
+
+ppm_p3_image* grayscale(ppm_p3_image *image){
+	ppm_p3_image *new = create_image(image->width, image->height, image->maximum, image->pixels);
+	int i, j;
+	for (i = 0; i < new->height; i++){
+		for (j = 0; j < new->width; j++){
+			int average_gray = (int) (new->pixels[i][j].r * 0.3) + (new->pixels[i][j].g * 0.59) + (new->pixels[i][j].b * 0.11);
+			new->pixels[i][j].r = average_gray;
+			new->pixels[i][j].g = new->pixels[i][j].r;
+			new->pixels[i][j].b = new->pixels[i][j].r;
+			if(new->pixels[i][j].r > new->maximum)
+				new->maximum = new->pixels[i][j].r;
+		}
+	}
+	return new;
 }
