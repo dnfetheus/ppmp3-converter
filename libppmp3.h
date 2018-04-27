@@ -3,20 +3,20 @@
 #include <string.h>
 
 typedef struct pixel{
-     int r;
-     int g;
-     int b;
+     unsigned char r;
+     unsigned char g;
+     unsigned char b;
  } pixel;
 
  typedef struct image{
      int width, height;
-     int maximum;
+     unsigned char maximum;
      pixel **pixels;
  } ppm_p3_image;
 
 pixel** create_pixels(int width, int height);
 void load_pixels(ppm_p3_image *image, FILE *file);
-ppm_p3_image* create_image(int width, int height, int maximum, pixel **pixels);
+ppm_p3_image* create_image(int width, int height, unsigned char maximum, pixel **pixels);
 ppm_p3_image* load_image(char name[]);
 void write_image(ppm_p3_image *image, char name[]);
-ppm_p3_image* grayscale(ppm_p3_image *image);
+void grayscale(ppm_p3_image *image);
