@@ -1,7 +1,7 @@
 #include "libppmp3.h"
 
 pixel** create_pixels(int width, int height){
-	pixel** new = (pixel**) malloc(height * sizeof(pixel*));
+	pixel **new = (pixel**) malloc(height * sizeof(pixel*));
 	if (new == NULL){
 		printf("Error on memory allocation\n");
 		exit(255);
@@ -10,7 +10,7 @@ pixel** create_pixels(int width, int height){
 	for (i = 0; i < height; i++){
 		new[i] = (pixel*) malloc(width * sizeof(pixel));
 		if (new[i] == NULL){
-			printf("Error on memory allocation");
+			printf("Error on memory allocation\n");
 			exit(255);
 		}
 	}
@@ -62,7 +62,7 @@ ppm_p3_image* load_image(char name[]){
 void write_image(ppm_p3_image *image, char name[]){
 	FILE *file = fopen(name, "w");
 	if (file == NULL){
-		printf("File cannot be opened\n");
+		printf("File cannot be saved\n");
 	}
 	fprintf(file, "P3\n%d %d\n%d\n", image->width, image->height, image->maximum);
 	int i, j;
@@ -77,24 +77,78 @@ void write_image(ppm_p3_image *image, char name[]){
 	fclose(file);
 }
 
-void free_image(ppm_p3_image *image){
-	int i;
-	for (i = 0; i < image->height; i++){
-		free(image->pixels[i]);
-	}
-	free(image);
-}
-
-void grayscale(ppm_p3_image *image){
+ppm_p3_image* grayscale(ppm_p3_image *image){
 	int i, j;
-	for (i = 0; i < image->height; i++){
-		for (j = 0; j < image->width; j++){
+	ppm_p3_image *new = create_image(image->width, image->height,image->maximum, create_pixels(image->width, image->height));
+	for (i = 0; i < new->height; i++){
+		for (j = 0; j < new->width; j++){
 			unsigned char average_gray = (int) (image->pixels[i][j].r * 0.3) + (image->pixels[i][j].g * 0.59) + (image->pixels[i][j].b * 0.11);
-			image->pixels[i][j].r = average_gray;
-			image->pixels[i][j].g = image->pixels[i][j].r;
-			image->pixels[i][j].b = image->pixels[i][j].r;
-			if (image->pixels[i][j].r > image->maximum)
-				image->maximum = image->pixels[i][j].r;
+			new->pixels[i][j].r = average_gray;
+			new->pixels[i][j].g = average_gray;
+			new->pixels[i][j].b = average_gray;
+			if (average_gray > new->maximum)
+				new->maximum = average_gray;
 		}
 	}
+	return new;
+}
+
+ppm_p3_image* rotate(ppm_p3_image *image, int mode){
+	ppm_p3_image *new;
+	pixel **pixels;
+	int i, j, width, height;
+	switch(mode){
+		case 1:
+			width = image->height;
+			height = image->width;
+			pixels = create_pixels(width, height);
+			for (i = 0; i < width; i++){
+				for (j = 0; j < height; j++){
+					pixels[j][width - i - 1] = image->pixels[i][j];
+				}
+			}
+			break;
+		case 2:
+			width = image->width;
+			height = image->height;
+			pixels = create_pixels(width, height);
+			for (i = 0; i < height; i++){
+				for (j = 0; j < width; j++){
+					pixels[height - i - 1][width - j - 1] = image->pixels[i][j];
+				}
+			}
+			break;
+		case 3:
+			width = image->height;
+			height = image->width;
+			pixels = create_pixels(width, height);
+			for (i = 0; i < width; i++){
+				for (j = 0; j < height; j++){
+					pixels[height - j - 1][i] = image->pixels[i][j];
+				}
+			}
+			break;
+		default:
+			return NULL;
+	}
+	new = create_image(width, height, image->maximum, pixels);
+	return new;
+}
+
+ppm_p3_image* change_gamma(ppm_p3_image *image, float percent){
+	if(percent == 100.0)
+		return image;
+	float realpercent = percent/100;
+	int i, j;
+	ppm_p3_image *new;
+	pixel **pixels = create_pixels(image->width, image->height);
+	for (i = 0; i < image->height; i++){
+		for (j = 0; j < image->width; j++){
+			pixels[i][j].r = (int) image->pixels[i][j].r * realpercent <= 255 ? image->pixels[i][j].r * realpercent : 255;
+			pixels[i][j].g = (int) image->pixels[i][j].g * realpercent <= 255 ? image->pixels[i][j].g * realpercent : 255;
+			pixels[i][j].b = (int) image->pixels[i][j].b * realpercent <= 255 ? image->pixels[i][j].b * realpercent : 255;
+		}
+	}
+	new = create_image(image->width, image->height, image->maximum, pixels);
+	return new;
 }
