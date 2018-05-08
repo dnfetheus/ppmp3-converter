@@ -59,6 +59,15 @@ ppm_p3_image* load_image(char name[]){
 	return image;
 }
 
+void free_image(ppm_p3_image *image){
+	int i;
+	for (i = 0; i < image->height; i++){
+		free(image->pixels[i]);
+	}
+	free(image->pixels);
+	free(image);
+}
+
 void write_image(ppm_p3_image *image, char name[]){
 	FILE *file = fopen(name, "w");
 	if (file == NULL){
@@ -74,12 +83,13 @@ void write_image(ppm_p3_image *image, char name[]){
 				fprintf(file, "%d %d %d ", image->pixels[i][j].r, image->pixels[i][j].g, image->pixels[i][j].b);
 		}
 	}
+	free_image(image);
 	fclose(file);
 }
 
 ppm_p3_image* grayscale(ppm_p3_image *image){
 	int i, j;
-	ppm_p3_image *new = create_image(image->width, image->height,image->maximum, create_pixels(image->width, image->height));
+	ppm_p3_image *new = create_image(image->width, image->height, 0, create_pixels(image->width, image->height));
 	for (i = 0; i < new->height; i++){
 		for (j = 0; j < new->width; j++){
 			unsigned char average_gray = (int) (image->pixels[i][j].r * 0.3) + (image->pixels[i][j].g * 0.59) + (image->pixels[i][j].b * 0.11);
