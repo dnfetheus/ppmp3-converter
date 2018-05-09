@@ -8,7 +8,7 @@ PPM P3 files are decompressed image files, it's most used when you need to edit 
 
 ## API
 
-[Here](../blob/master/API.md)
+[Here](./blob/master/API.md)
 
 ## Installation
 
@@ -65,4 +65,4 @@ And if you want to contribute coding the library, just fork it and send a pull r
 >
 >Felipe Matheus M.
 
-[LICENSE](../blob/master/LICENSE.md)
+[LICENSE](./blob/master/LICENSE.md)
