@@ -67,13 +67,55 @@ A dynamic pixel[height][width]
 ### Load pixels
 
 ```c
-void load_pixels(ppm_p3_image *image, FILE *file);
+void load_pixels(ppm_p3_image *image, FILE *file)
 ```
 
 #### Description
 It's a function to pick each RGB pixel from PPM P3 file, and put that pixel on a relative index of ppm_p3_image.pixels[][].
 
 #### Parameters
-* image : A pointer to new allocated ppm_p3_image;
+* image : A pointer to new allocated ppm_p3_image
 * file : A pointer to the file who'll be represented by image pointer.
 
+#### Return
+
+Nothing.
+
+### Create image
+
+```c
+ppm_p3_image* create_image(int width, int height, unsigned char maximum, pixel **pixels)
+```
+
+#### Description
+That function receives all information of a PPM P3 file and dynamically allocs a ppm_p3_image with the information.
+
+#### Parameters
+* width : A int value meaning the width of the image that is being represented;
+* height : A int value meaning the height of the image that is being represented;
+* maximum : A char between 0 and 255 who is representing the bigger RGB pixel of the image;
+* pixels : A pointer of a pointer (it will be a heap multidimensional array) which has all pixels of the image.
+
+#### Return
+
+A ppm_p3_image whose variables are equal to parameters' value.
+
+### Load image
+
+```c
+ppm_p3_image* load_image(char name[])
+```
+
+#### Description
+
+That function read a file based on its path. If it exists, then the function will created a ppm_p3_image based on file information.
+
+#### Parameters
+
+* name : The file path (like: "/home/user/Downloads/image.ppm" or "C:\Users\user\SomeFolder\image.ppm")
+
+#### Return
+
+NULL if the file cannot be open or if it isn't a PPM P3 file.
+
+On the other hand, returns a ppm_p3_image whose variables are equal from the information on the file required.
