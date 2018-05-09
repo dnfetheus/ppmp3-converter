@@ -145,7 +145,7 @@ ppm_p3_image* rotate(ppm_p3_image *image, int mode){
 	return new;
 }
 
-ppm_p3_image* change_gamma(ppm_p3_image *image, float percent){
+ppm_p3_image* change_brightness(ppm_p3_image *image, float percent){
 	if(percent == 100.0)
 		return image;
 	float realpercent = percent/100;

@@ -22,4 +22,4 @@ void free_image(ppm_p3_image *image);
 void write_image(ppm_p3_image *image, char name[]);
 ppm_p3_image* grayscale(ppm_p3_image *image);
 ppm_p3_image* rotate(ppm_p3_image *image, int mode);
-ppm_p3_image* change_gamma(ppm_p3_image *image, float percent);
+ppm_p3_image* change_brightness(ppm_p3_image *image, float percent);
