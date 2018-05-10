@@ -8,14 +8,14 @@ PPM P3 files are decompressed image files, it's most used when you need to edit 
 
 ## API
 
-[Here](./API.md)
+[Here](./docs/API.md)
 
 ## Installation
 
 A simple way of obtaining the library is downloading it and putting it on your project folder.
 
 1. Clone the repository;
-2. Move/copy the .c and .h files to the project folder which needs to use the library;
+2. Move/copy the .c and .h files from lib folder to the project folder which needs to use the library;
 3. Compile your project with the libppmp3.c.
 
 ### A way to compile
