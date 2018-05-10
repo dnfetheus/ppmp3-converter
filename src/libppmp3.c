@@ -1,4 +1,4 @@
-#include "libppmp3.h"
+#include "../headers/libppmp3.h"
 
 pixel** create_pixels(int width, int height){
 	pixel **new = (pixel**) malloc(height * sizeof(pixel*));
