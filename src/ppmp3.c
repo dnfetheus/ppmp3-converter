@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 #include "../include/ppmp3.h"
 
 typedef struct pixel{
@@ -14,10 +14,6 @@ struct ppmp3_image{
     unsigned int height;
     unsigned char maximum;
     pixel **pixels;
-};
-
-enum ppmp3_rotation{
-	Clockwise, Reverse, Counterclockwise
 };
 
 pixel** ppmp3_create_pixels(unsigned int width, unsigned int height){
@@ -115,13 +111,13 @@ void ppmp3_write_image(ppmp3_image image, char destination[]){
 			}
 		}
 	}
-
-	ppmp3_free_image(image);
+	
 	fclose(file);
 }
 
 ppmp3_image ppmp3_grayscale(ppmp3_image image){
-	ppmp3_image new_image = ppmp3_create_image(image->width, image->height, 0, create_pixels(image->width, image->height));
+	pixel **pixels = ppmp3_create_pixels(image->width, image->height);
+	ppmp3_image new_image = ppmp3_create_image(image->width, image->height, 0, pixels);
 	unsigned char average_gray;
 
 	for(unsigned int i = 0; i < new_image->height; i++){
@@ -142,22 +138,22 @@ ppmp3_image ppmp3_rotate(ppmp3_image image, enum ppmp3_rotation mode){
 	pixel **pixels;
 	ppmp3_image new_image;
 
-	if(mode == Clockwise || mode == Counterclockwise){
+	if(mode == CLOCKWISE || mode == COUNTERCLOCKWISE){
 		pixels = ppmp3_create_pixels(image->height, image->width);
 		new_image = ppmp3_create_image(image->height, image->width, image->maximum, pixels);
 
 		for (unsigned int i = 0, y; i < new_image->width; i++){
 			for (unsigned int j = 0, z; j < new_image->height; j++){
 
-				y = mode == Clockwise ? j : new_image->height - j - 1;
-				z = mode == Clockwise ? new_image->width - i - 1 : i;
+				y = mode == CLOCKWISE ? j : new_image->height - j - 1;
+				z = mode == CLOCKWISE ? new_image->width - i - 1 : i;
 
 				new_image->pixels[y][z] = image->pixels[i][j];
 			}
 		}
 	}
 
-	else if(mode == Reverse){
+	else if(mode == REVERSE){
 		pixels = ppmp3_create_pixels(image->width, image->height);
 		new_image = ppmp3_create_image(image->width, image->height, image->maximum, pixels);
 
