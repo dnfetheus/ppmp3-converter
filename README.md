@@ -1,4 +1,4 @@
-## Description
+## About
 
 This repository has some functions (it isn't a library, definitely) that makes you able to open, manipulate and write .ppm files whose type is P3.
 
