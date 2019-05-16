@@ -1,20 +1,36 @@
-#include "../headers/libppmp3.h"
+#include <stdlib.h>
 
-pixel** create_pixels(int width, int height){
-	pixel **new = (pixel**) malloc(height * sizeof(pixel*));
-	if (new == NULL){
-		printf("Error on memory allocation\n");
+#include "../include/ppmp3.h"
+
+struct pixel{
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+};
+
+struct ppmp3_image{
+    unsigned int width;
+    unsigned int height;
+    unsigned char maximum;
+    pixel **pixels;
+};
+
+pixel** ppmp3_create_pixels(unsigned int width, unsigned int height){
+	pixel **pixels = malloc(height * sizeof(pixel*));
+
+	if(pixels == NULL){
 		exit(255);
 	}
-	int i;
-	for (i = 0; i < height; i++){
-		new[i] = (pixel*) malloc(width * sizeof(pixel));
-		if (new[i] == NULL){
-			printf("Error on memory allocation\n");
+
+	for(int i = 0; i < height; i++){
+		pixels[i] = malloc(width * sizeof(pixel));
+
+		if (pixels[i] == NULL){
 			exit(255);
 		}
 	}
-	return new;
+
+	return pixels;
 }
 
 void load_pixels(ppm_p3_image *image, FILE *file){
