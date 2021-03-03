@@ -3,7 +3,7 @@
 Just a bunch of functions to deal with PPM P3 images. You can use them as you want to.
 
 If you want to test, the next steps will give you instructions to.
-## Installing
+## Installation
 
 **make** is needed to use [Makefile](Makefile).
 
@@ -15,7 +15,7 @@ make
 ```
 **P.S.:** Makefile is configured to use GCC as compiler. If you want to change it, just assign **CC** in Makefile to your compiler of choice.
 
-## Using
+## Usage
 
 The example takes as an input a path to an existing PPMP3 image and as an output generates a PPMP3 image to a chosen path.
 ```sh
