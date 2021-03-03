@@ -33,4 +33,4 @@ The example takes as an input a path to an existing PPMP3 image and as an output
 
 This repository is licensed under the MIT License.
 
-Read [LICENSE.md](LICENSE.md) to see more details.
+Read [LICENSE](LICENSE) to see more details.
