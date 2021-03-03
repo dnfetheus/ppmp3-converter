@@ -1,4 +1,4 @@
-# PPMP3 Manipulation
+# PPM P3 Manipulation
 
 Just a bunch of functions to deal with PPM P3 images. You can use them as you want to.
 
